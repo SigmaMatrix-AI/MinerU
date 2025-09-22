@@ -20,8 +20,21 @@ RUN apt-get update && \
 RUN python3 -m pip install -U 'mineru[core]' --break-system-packages && \
     python3 -m pip cache purge
 
+# Install additional dependencies for SageMaker
+RUN python3 -m pip install flask requests --break-system-packages
+
 # Download models and update the configuration file
 RUN /bin/bash -c "mineru-models-download -s huggingface -m all"
+
+# Copy SageMaker inference script
+COPY inference.py /opt/ml/code/
+
+# Set working directory for SageMaker
+WORKDIR /opt/ml/code
+
+# Set environment variables for SageMaker
+ENV SAGEMAKER_PROGRAM=inference.py
+ENV PYTHONPATH=/opt/ml/code
 
 # Set the entry point to activate the virtual environment and run the command line tool
 ENTRYPOINT ["/bin/bash", "-c", "export MINERU_MODEL_SOURCE=local && exec \"$@\"", "--"]
