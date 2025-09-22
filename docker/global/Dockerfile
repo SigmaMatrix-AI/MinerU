@@ -21,10 +21,14 @@ RUN python3 -m pip install -U 'mineru[core]' --break-system-packages && \
     python3 -m pip cache purge
 
 # Install additional dependencies for SageMaker
-RUN python3 -m pip install flask requests --break-system-packages
+RUN python3 -m pip install flask requests --break-system-packages --force-reinstall
 
 # Download models and update the configuration file
 RUN /bin/bash -c "mineru-models-download -s huggingface -m all"
+
+
+
+
 
 # Copy SageMaker inference script
 COPY inference.py /opt/ml/code/
