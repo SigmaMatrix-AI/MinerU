@@ -26,7 +26,7 @@ RUN python3 -m pip install flask requests --break-system-packages --ignore-insta
 # Download models and update the configuration file
 RUN /bin/bash -c "mineru-models-download -s huggingface -m all"
 
-
+RUN python3 -m pip install "ray[serve]" grpcio grpcio-tools --break-system-packages
 
 
 
