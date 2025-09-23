@@ -40,5 +40,15 @@ WORKDIR /opt/ml/code
 ENV SAGEMAKER_PROGRAM=inference.py
 ENV PYTHONPATH=/opt/ml/code
 
+# Copy SageMaker inference script
+COPY inference.py /opt/ml/code/
+
+# Set working directory for SageMaker
+WORKDIR /opt/ml/code
+
+# Set environment variables for SageMaker
+ENV SAGEMAKER_PROGRAM=inference.py
+ENV PYTHONPATH=/opt/ml/code
+
 # Set the entry point to activate the virtual environment and run the command line tool
 ENTRYPOINT ["/bin/bash", "-c", "export MINERU_MODEL_SOURCE=local && exec \"$@\"", "--"]
